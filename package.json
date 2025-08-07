@@ -1,0 +1,22 @@
+{
+  "name": "devtree",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nightfury-04/devtree.git"
+  },
+  "author": "Diana Reyna",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nightfury-04/devtree/issues"
+  },
+  "homepage": "https://github.com/nightfury-04/devtree#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
