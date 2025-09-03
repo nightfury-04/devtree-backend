@@ -3,6 +3,7 @@ import { validationResult } from "express-validator";
 import slug from "slug";
 import User from "../models/User";
 import { hashPassword, checkPassword } from "../utils/auth";
+import { generateJWT } from "../utils/jwt";
 
 export const registerUser = async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -50,4 +51,7 @@ export const loginUser = async (req: Request, res: Response) => {
     const error = new Error("La contraseña es incorrecta");
     return res.status(401).json({ message: error.message });
   }
+
+  const token = generateJWT({ id: user._id });
+  res.send(token);
 };
