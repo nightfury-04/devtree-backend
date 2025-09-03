@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { validationResult } from "express-validator";
 import slug from "slug";
+import  jwt  from "jsonwebtoken";
 import User from "../models/User";
 import { hashPassword, checkPassword } from "../utils/auth";
 import { generateJWT } from "../utils/jwt";
@@ -55,3 +56,25 @@ export const loginUser = async (req: Request, res: Response) => {
   const token = generateJWT({ id: user._id });
   res.send(token);
 };
+
+export const getUser = async (req: Request, res: Response) => {
+  const bearer = req.headers.authorization;
+
+  if (!bearer) {
+    const error = new Error("No autorizado");
+    return res.status(401).json({ error: error.message });
+  }
+
+  const [, token] = bearer.split(" ");
+
+  if(!token) {
+    const error = new Error("No autorizado");
+    return res.status(401).json({ error: error.message });
+  }
+
+  try {
+    const result = jwt.verify(token, process.env.JWT_SECRET);
+  } catch (error) {
+    res.status(401).json({ error: "Token No Válido" });
+  }
+}
