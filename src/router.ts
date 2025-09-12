@@ -41,6 +41,8 @@ router.patch("/user", authenticate,
   authenticate,
   updateProfile
 
-) 
+)
+
+router.post("/user/image", authenticate);
 
 export default router;
