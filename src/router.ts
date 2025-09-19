@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { body } from "express-validator";
-import { registerUser, loginUser, getUser, updateProfile } from "./handlers";
+import { registerUser, loginUser, getUser, updateProfile, uploadImage, getUserByHandle } from "./handlers";
 import { handleInputErrors } from "./middleware/validation";
 import { authenticate } from "./middleware/auth";
 
@@ -23,7 +23,7 @@ router.post(
   "/auth/login",
   body("email").isEmail().withMessage("E-mail no válido"),
   body("password")
-    .isEmpty()
+    .notEmpty()
     .withMessage("La contraseña es obligatoria"),
   handleInputErrors,
   loginUser
@@ -43,6 +43,8 @@ router.patch("/user", authenticate,
 
 )
 
-router.post("/user/image", authenticate);
+router.post("/user/image", authenticate, uploadImage);
+
+router.get("/user/:handle", getUserByHandle);
 
 export default router;
