@@ -1,6 +1,14 @@
 import { Router } from "express";
 import { body } from "express-validator";
-import { registerUser, loginUser, getUser, updateProfile, uploadImage, getUserByHandle } from "./handlers";
+import {
+  registerUser,
+  loginUser,
+  getUser,
+  updateProfile,
+  uploadImage,
+  getUserByHandle,
+  searchByHandle,
+} from "./handlers";
 import { handleInputErrors } from "./middleware/validation";
 import { authenticate } from "./middleware/auth";
 
@@ -22,29 +30,30 @@ router.post(
 router.post(
   "/auth/login",
   body("email").isEmail().withMessage("E-mail no válido"),
-  body("password")
-    .notEmpty()
-    .withMessage("La contraseña es obligatoria"),
+  body("password").notEmpty().withMessage("La contraseña es obligatoria"),
   handleInputErrors,
   loginUser
 );
 
-router.get('/user', authenticate, getUser);
-router.patch("/user", authenticate, 
-  body('handle')
-  .notEmpty()
-  .withMessage("El handle no puede ir vacío"),
-  body("description")
-  .notEmpty()
-  .withMessage("La descripción no puede ir vacía"),
+router.get("/user", authenticate, getUser);
+router.patch(
+  "/user",
+  authenticate,
+  body("handle").notEmpty().withMessage("El handle no puede ir vacío"),
   handleInputErrors,
   authenticate,
   updateProfile
-
-)
+);
 
 router.post("/user/image", authenticate, uploadImage);
 
 router.get("/user/:handle", getUserByHandle);
+
+router.post(
+  "/search",
+  body("handle").notEmpty().withMessage("El handle no puede ir vacío"),
+  handleInputErrors,
+  searchByHandle
+);
 
 export default router;
